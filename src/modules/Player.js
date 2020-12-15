@@ -10,7 +10,7 @@ export default class Player {
       if (!newGameboard.receiveAttack(randomIndex)) {
         hasAttacked = true;
       }
-      return true;
+      return randomIndex;
     }
   }
 }

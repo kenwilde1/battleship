@@ -39,13 +39,14 @@ export default class Gameboard {
       const shipInQuestion = cellToHit.shipID;
       this.shipList.filter((ship) => {
         if (ship.id === shipInQuestion) {
-          ship.hit(1);
+          ship.hit(coord);
           cellToHit.isHit = true;
         }
       });
       this.hits++;
       return true;
     } else {
+      this.gameboardArray[coord][1].isHit = true;
       this.misses++;
       return false;
     }

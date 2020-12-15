@@ -39,28 +39,76 @@
 .main-container {
   height: 60vh;
   margin: 50px 50px 0px 50px;
-  padding: 0px 0px 0px 80px;
+  padding: 0px 120px 0px 120px;
   border: 1px solid black;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 /* Gameboard Container Section */
 .gameboard-container {
   height: 520px;
   width: 520px;
-  border: 1px solid red;
+  border: 3px solid red;
   display: flex;
   flex-wrap: wrap;
 }
 
-.gameboard-container div {
+.gameboard-container .cell {
   height: 50px;
   width: 50px;
   border: 1px solid grey;
   cursor: pointer;
 }
 
-.gameboard-container div:hover {
+h2 {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.gameboard-container .cell:hover {
   background: lightgray;
+  color: black;
+}
+
+.ship {
+  background: blue;
+  color: white;
+}
+.attacked,
+.missed {
+  background: white;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+.attacked::before {
+  content: "hit";
+  color: green;
+}
+
+.missed::before {
+  content: "miss";
+  color: red;
+}
+
+/* Computer Gameboard Styling */
+
+.computer-gameboard .cell {
+  background: white;
+  color: white;
+}
+
+/* Human Gameboard Styling */
+
+.human-gameboard {
+}
+
+.inactive {
+  opacity: 50%;
+  border: 1px solid black;
+  pointer-events: none;
 }
