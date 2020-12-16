@@ -21,12 +21,8 @@ export default class Game {
     const cells = document.querySelectorAll(".computer-gameboard .cell");
     cells.forEach((cell) =>
       cell.addEventListener("click", (e) => {
-        let target;
-        if (e.currentTarget.className.length > 12) {
-          target = parseInt(e.currentTarget.className.slice(9, 11));
-        } else {
-          target = parseInt(e.currentTarget.className.slice(9));
-        }
+        let target = parseInt(e.target.dataset.id);
+
         if (!this.handleClick(target)) {
           setTimeout(() => {
             this.switchCurrentPlayer();
@@ -36,39 +32,32 @@ export default class Game {
     );
   }
 
-  addDrag() {
-    let dragged;
-    const cells = document.querySelectorAll(".human-gameboard .cell");
-    cells.forEach((cell) => {
-      cell.addEventListener("click", (e) => {
-        console.log(e.currentTarget);
-      });
-    });
-  }
-
   startGame() {
     this.computerGameboardElement.classList.remove("inactive");
     this.humanGameboardElement.classList.add("inactive");
   }
 
   initializeGameboard() {
-    this.placeAllShips();
+    this.placeComputerShips();
     renderGameboard(this.humanArray, "human");
     renderGameboard(this.computerArray, "comp");
     this.addEventListeners();
-    this.addDrag();
   }
 
-  placeAllShips() {
+  placeHumanShips() {
     humanShips.forEach((ship) =>
       this.humanGameboard.placeShip(ship.id, ship.coords)
     );
+  }
+
+  placeComputerShips() {
     computerShips.forEach((ship) =>
       this.computerGameboard.placeShip(ship.id, ship.coords)
     );
   }
 
   handleClick(target) {
+    console.log(this.computerArray);
     const result = this.computerGameboard.receiveAttack(target);
 
     if (!result) {
@@ -95,6 +84,7 @@ export default class Game {
         !this.humanArray[randomIndex][1].isPlaced
       ) {
         this.humanGameboard.receiveAttack(randomIndex);
+        console.log(this.humanArray);
         renderGameboard(this.humanArray, "human");
         this.computerGameboardElement.classList.remove("inactive");
         this.humanGameboardElement.classList.add("inactive");
@@ -120,5 +110,137 @@ export default class Game {
     this.computerGameboard = new Gameboard();
     this.computerArray = this.computerGameboard.initializeGameboard();
     this.initializeGameboard();
+  }
+
+  dragShips() {
+    let ships = [];
+    const shipElements = document.querySelectorAll(
+      ".user-ship-container .shipCell"
+    );
+    const userSquares = document.querySelectorAll(".human-gameboard .cell");
+    shipElements.forEach((ship) => {
+      ships.push(shipElements);
+    });
+
+    let selectedShipNameWithIndex;
+    let draggedShip;
+    let draggedShipLength = 0;
+    ships[0].forEach((ship) =>
+      ship.addEventListener("mousedown", (e) => {
+        selectedShipNameWithIndex = e.target.id;
+      })
+    );
+    const dragStart = (e) => {
+      draggedShip = e.currentTarget.lastElementChild;
+
+      e.target.childNodes.forEach((el) => {
+        if (el.id) {
+          draggedShipLength++;
+        }
+      });
+      console.log(draggedShip);
+    };
+
+    const dragOver = (e) => {
+      e.preventDefault();
+    };
+
+    const dragEnter = (e) => {
+      e.preventDefault();
+    };
+
+    const dragLeave = () => {};
+
+    const dragDrop = (e) => {
+      let shipNameWithLastId = draggedShip.id;
+      let shipClass = shipNameWithLastId.slice(0, -2);
+      console.log(shipClass);
+      let lastShipIndex = parseInt(shipNameWithLastId.substr(-1));
+      let ShipLastId = lastShipIndex + parseInt(e.target.dataset.id);
+      let selectedShipIndex = parseInt(selectedShipNameWithIndex.substr(-1));
+      ShipLastId = ShipLastId - selectedShipIndex;
+
+      let newCoords = [];
+      let numOfShipCells = draggedShipLength;
+
+      for (let i = numOfShipCells - 1; i > 0; i--) {
+        const end = parseInt(e.target.dataset.id);
+        const start = end - i;
+        newCoords.push(start);
+      }
+
+      newCoords.push(parseInt(e.target.dataset.id));
+      const shipInQuestion = parseInt(draggedShip.parentElement.dataset.id);
+      this.humanGameboard.shipList.filter((ship) => {
+        if (ship.id === shipInQuestion) {
+          ship.coords = [...newCoords];
+        }
+      });
+      console.log(newCoords);
+      humanShips.filter((ship) => {
+        if (ship.id === shipInQuestion) {
+          console.log(true);
+          ship.coords = [...newCoords];
+        }
+      });
+      console.log(humanShips);
+      for (let i = 0; i < draggedShipLength; i++) {
+        userSquares[
+          parseInt(e.target.dataset.id) - selectedShipIndex + i
+        ].classList.add("taken");
+        this.humanArray[
+          e.target.dataset.id - selectedShipIndex + i
+        ].isPlaced = true;
+        this.humanArray[
+          e.target.dataset.id - selectedShipIndex + i
+        ].shipID = parseInt(draggedShip.parentElement.dataset.id);
+      }
+      this.placeHumanShips();
+      draggedShipLength = 0;
+      console.log(this.humanArray);
+    };
+
+    const dragEnd = () => {};
+
+    ships[0].forEach((ship) => ship.addEventListener("dragstart", dragStart));
+
+    userSquares.forEach((square) =>
+      square.addEventListener("dragstart", dragStart)
+    );
+    userSquares.forEach((square) =>
+      square.addEventListener("dragover", dragOver)
+    );
+    userSquares.forEach((square) =>
+      square.addEventListener("dragenter", dragEnter)
+    );
+    userSquares.forEach((square) =>
+      square.addEventListener("dragleave", dragLeave)
+    );
+    userSquares.forEach((square) => square.addEventListener("drop", dragDrop));
+    userSquares.forEach((square) =>
+      square.addEventListener("dragend", dragEnd)
+    );
+
+    /*
+    dragOver() {
+
+    }
+
+    dragEnter() {
+
+    }
+
+    dragLeave() {
+
+    }
+
+    dragDrop() {
+
+    }
+
+    dragEnd() {
+
+    }
+    */
   }
 }

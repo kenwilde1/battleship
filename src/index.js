@@ -5,3 +5,5 @@ newGame.initializeGameboard();
 
 const startGameButton = document.querySelector(".header button");
 startGameButton.addEventListener("click", () => newGame.startGame());
+
+newGame.dragShips();

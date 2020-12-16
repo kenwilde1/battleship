@@ -34,6 +34,7 @@ export default class Gameboard {
   }
 
   receiveAttack(coord) {
+    console.log(coord);
     const cellToHit = this.gameboardArray[coord][1];
     if (cellToHit.isPlaced && !cellToHit.isHit) {
       const shipInQuestion = cellToHit.shipID;

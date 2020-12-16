@@ -11,16 +11,16 @@ export default function renderGameboard(gameboard, type) {
   for (let i = 0; i < 100; i++) {
     let cell = document.createElement("div");
     if (gameboard[i][1].isPlaced && !gameboard[i][1].isHit) {
-      cell.className = `cell cell${i} ship`;
+      cell.className = `cell ship`;
     } else if (!gameboard[i][1].isPlaced && gameboard[i][1].isHit) {
-      cell.className = `cell cell${i} ship missed`;
+      cell.className = `cell ship missed`;
     } else if (gameboard[i][1].isHit) {
-      cell.className = `cell cell${i} ship attacked`;
+      cell.className = `cell ship attacked`;
     } else {
-      cell.className = `cell cell${i}`;
+      cell.className = `cell`;
     }
-    cell.draggable = true;
-    cell.ondragstart = "event.dataTransfer.setData('text/plain',null)";
+    cell.dataset.id = i;
+
     gameboardContainer.appendChild(cell);
   }
 }

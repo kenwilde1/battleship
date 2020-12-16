@@ -112,3 +112,75 @@ h2 {
   border: 1px solid black;
   pointer-events: none;
 }
+
+/* User Ship Container */
+
+.game-setup {
+  height: 600px;
+  width: 600px;
+  border: 1px solid red;
+  margin-left: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-ship-container {
+  height: 500px;
+  width: 100%;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.shipCell div {
+  height: 50px;
+  width: 50px;
+  border: 1px solid black;
+}
+
+.destroyer-container {
+  height: 50px;
+  width: 100px;
+  border: 1px solid black;
+  background: red;
+  display: flex;
+}
+
+.submarine-container {
+  height: 50px;
+  width: 150px;
+  border: 1px solid black;
+  background: green;
+  display: flex;
+}
+
+.cruiser-container {
+  height: 50px;
+  width: 150px;
+  border: 1px solid black;
+  background: blue;
+  display: flex;
+}
+
+.battleship-container {
+  height: 50px;
+  width: 200px;
+  border: 1px solid black;
+  background: goldenrod;
+  display: flex;
+}
+
+.carrier-container {
+  height: 50px;
+  width: 250px;
+  border: 1px solid black;
+  background: aqua;
+  display: flex;
+}
+
+.taken {
+  background: blue;
+}
